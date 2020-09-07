@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { useCollection } from "../../useFirebase";
 
 import { firestore, collectionToObject } from "../../firebase";
@@ -35,45 +35,54 @@ export function CostManagementList() {
 
   return (
     <>
-    <button onClick={() => history.push("/cost-management/add")}>Add cost management</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Expense</th>
-          <th>Sum</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {costManagement.map((cost) => (
-          <tr key={cost.id}>
-            <td>{cost.category}</td>
-            <td>{cost.expense}</td>
-            <td>{cost.sum}</td>
-            <td>
-              <button>Edit</button>
-            </td>
-            <td>
-              <button
-                onClick={async () => {
-                  await firestore
-                    .collection("cost-management")
-                    .doc(cost.id)
-                    .delete();
-                  setCostManagement(
-                    costManagement.filter((c) => c.id !== cost.id)
-                  );
-                }}
-              >
-                Delete
-              </button>
-            </td>
+      <button onClick={() => history.push("/cost-management/add")}>
+        Add cost management
+      </button>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Expense</th>
+            <th>Sum</th>
+            <th></th>
+            <th></th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {costManagement.map((cost) => (
+            <tr key={cost.id}>
+              <td>{cost.category}</td>
+              <td>{cost.expense}</td>
+              <td>{cost.sum}</td>
+              <td>
+                <button
+                  onClick={async () => {
+                    await firestore.collection("/cost-management").doc(cost.id).update({cost});
+                    history.push(`/cost-management/${cost.id}`);
+                  }}
+                >
+                  Edit
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={async () => {
+                    await firestore
+                      .collection("cost-management")
+                      .doc(cost.id)
+                      .delete();
+                    setCostManagement(
+                      costManagement.filter((c) => c.id !== cost.id)
+                    );
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }

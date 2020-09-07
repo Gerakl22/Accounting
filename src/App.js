@@ -6,15 +6,24 @@ import { CostManagementForm } from "./components/costManagement/CostManagementFo
 function App() {
   return (
     <BrowserRouter>
-      <Route exact path="/">
-        <Redirect to="/cost-management" />;
-      </Route>
-      <Route exact path="/cost-management">
-        <CostManagementList />
-      </Route>
-      <Route path="/cost-management/add">
-        <CostManagementForm />
-      </Route>
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/cost-management" />;
+        </Route>
+        <Route exact path="/cost-management">
+          <CostManagementList />
+        </Route>
+        <Route path="/cost-management/add">
+          <CostManagementForm />
+        </Route>
+        <Route path="/cost-management/:costId">
+          {({
+            match: {
+              params: { costId },
+            },
+          }) => <CostManagementForm costId={costId} />}
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 }
