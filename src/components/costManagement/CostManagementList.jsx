@@ -56,8 +56,7 @@ export function CostManagementList() {
               <td>{cost.sum}</td>
               <td>
                 <button
-                  onClick={async () => {
-                    await firestore.collection("/cost-management").doc(cost.id).update({cost});
+                  onClick={() => {
                     history.push(`/cost-management/${cost.id}`);
                   }}
                 >
