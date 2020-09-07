@@ -1,35 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { firestore, docToObject } from "../../firebase";
 
-export function CostManagementForm({ costId }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [category, setCategory] = useState("");
-  const [expense, setExpense] = useState("");
-  const [sum, setSum] = useState("");
+export function CostManagementForm({ save, cost }) {
+  const [category, setCategory] = useState();
+  const [expense, setExpense] = useState();
+  const [sum, setSum] = useState();
   const history = useHistory();
-
-  useEffect(() => {
-    if (typeof costId !== "undefined") {
-      firestore
-        .collection("/cost-management")
-        .doc(costId)
-        .get()
-        .then(docToObject)
-        .then((cost) => {
-          setCategory(cost.category);
-          setExpense(cost.expense);
-          setSum(cost.sum);
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
-
-  if (isLoading) {
-    return "...Loading..";
-  }
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -60,17 +36,7 @@ export function CostManagementForm({ costId }) {
 
       <button
         onClick={async () => {
-          if (typeof costId === undefined) {
-            await firestore
-              .collection("cost-management")
-              .add({ expense, category, sum });
-          } else {
-            await firestore
-              .collection("cost-management")
-              .doc(costId)
-              .update({ expense, category, sum });
-          }
-
+          await save({ category, expense, sum });
           history.push("/cost-management");
         }}
       >
