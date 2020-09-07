@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export function CostManagementForm({ save, cost }) {
-  const [category, setCategory] = useState();
-  const [expense, setExpense] = useState();
-  const [sum, setSum] = useState();
+  const [category, setCategory] = useState("");
+  const [expense, setExpense] = useState("");
+  const [sum, setSum] = useState("null");
   const history = useHistory();
 
   return (
