@@ -37,7 +37,7 @@ export function CostManagementPage() {
           <CostManagementList remove={remove} costManagement={costManagement} />
         </Route>
         <Route path="/cost-management/add">
-          <CostManagementForm save={add} />
+          <CostManagementForm save={add} cost={""} />
         </Route>
         <Route path="/cost-management/:costId">
           {({
@@ -46,7 +46,7 @@ export function CostManagementPage() {
             },
           }) => (
             <CostManagementForm
-              cost={costManagement.find((cost) => cost.id === costId)}
+              cost={costManagement.find((c) => c.id === costId)}
               save={(fields) => update(costId, fields)}
             />
           )}

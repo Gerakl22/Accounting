@@ -20,14 +20,14 @@ export function useFirebaseCollection(collection) {
     }
 
     getData();
-  }, []);
+  }, [data, collection]);
 
   const add = useCallback(
     async (obj) => {
       const addId = await firestore.collection(collection).add(obj);
       setData([...data, { ...obj, id: addId.id }]);
     },
-    [data]
+    [data, collection]
   );
 
   const update = useCallback(
@@ -41,7 +41,7 @@ export function useFirebaseCollection(collection) {
         ...data.slice(updateIndex + 1),
       ]);
     },
-    [data]
+    [data, collection]
   );
 
   const remove = useCallback(
@@ -49,7 +49,7 @@ export function useFirebaseCollection(collection) {
       await firestore.collection(collection).doc(docId).delete();
       setData(data.filter((r) => r.id !== docId));
     },
-    [data]
+    [data, collection]
   );
 
   return { data, error, isLoading, add, update, remove };
